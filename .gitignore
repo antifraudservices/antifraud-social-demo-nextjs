@@ -1,0 +1,9 @@
+/node_modules/
+/.next/
+/coverage/
+/screenshots/
+/snapshots/
+/test-results/
+/playwright-report/
+*.tsbuildinfo
+.DS_Store
