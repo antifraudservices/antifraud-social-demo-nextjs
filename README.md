@@ -48,8 +48,8 @@ The synthetic demo PIN is `0426`. It is a public fixture and never represents
 production authentication or wallet protection.
 
 The cross-repository implementation work is tracked in the GitHub issues
-linked from [`docs/USE_CASE_TASKS.md`](docs/USE_CASE_TASKS.md). This local
-repository has no configured GitHub remote, so its local task document must not
-be reported as a GitHub issue tracker.
+linked from [`docs/USE_CASE_TASKS.md`](docs/USE_CASE_TASKS.md). The social
+portal owns issues for UC-SOC-01 through UC-SOC-07; shared contracts, SDKs,
+gateway behavior and reusable UI remain in their respective repositories.
 
 Copyright 2026 Antifraud Services Inc. Apache-2.0.

@@ -145,6 +145,18 @@ Task gates:
 
 The prompt is the complete contract. Executable work is owned by these issues:
 
+Social relying-party portal:
+
+1. [UC-SOC-01: request a signature before publication](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/1).
+2. [UC-SOC-02: authorize with local user presence and managed wallet](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/2).
+3. [UC-SOC-03: persist rejection, cancellation and expiry](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/3).
+4. [UC-SOC-04: publish and verify an immutable signed asset](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/4).
+5. [UC-SOC-05: receive a third-party signature request](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/5).
+6. [UC-SOC-06: support multiple signers and countersignature](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/6).
+7. [UC-SOC-07: demonstrate C2PA and ML-DSA-65 interoperability](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/7).
+
+Shared dependencies and sibling portals:
+
 1. [Canonical attachment contract and minimal PDF proof](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/2).
 2. [SDK Core delivery orchestration](https://github.com/antifraudservices/antifraud-sdk-core-ts/issues/5).
 3. [SDK Node trusted transport](https://github.com/antifraudservices/antifraud-sdk-node-ts/issues/5).
