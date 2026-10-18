@@ -1,7 +1,7 @@
 # Social publication signing use-case tasks
 
 These tasks describe the bounded synthetic demo. The Antifraud Data Space MVP
-Prompt v8 remains the complete contract and takes precedence if this summary
+Prompt v9 remains the complete contract and takes precedence if this summary
 omits a requirement.
 
 ## Preliminary demo now present
@@ -154,6 +154,7 @@ Social relying-party portal:
 5. [UC-SOC-05: receive a third-party signature request](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/5).
 6. [UC-SOC-06: support multiple signers and countersignature](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/6).
 7. [UC-SOC-07: demonstrate C2PA and ML-DSA-65 interoperability](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/7).
+8. [Align the social portal with the Demo-only environment contract](https://github.com/antifraudservices/antifraud-social-demo-nextjs/issues/8).
 
 Shared dependencies and sibling portals:
 
@@ -161,10 +162,11 @@ Shared dependencies and sibling portals:
 2. [SDK Core delivery orchestration](https://github.com/antifraudservices/antifraud-sdk-core-ts/issues/5).
 3. [SDK Node trusted transport](https://github.com/antifraudservices/antifraud-sdk-node-ts/issues/5).
 4. [Gateway confidential persistence and retrieval](https://github.com/antifraudservices/antifraud-gw-node-ts/issues/1).
-5. [Reusable controlled attachment panel](https://github.com/antifraudservices/antifraud-portal-components-react/issues/5).
-6. [Professional send/review interface](https://github.com/antifraudservices/antifraud-professional-nextjs/issues/1).
-7. [Personal receive/authorize interface](https://github.com/antifraudservices/antifraud-personal-next/issues/1).
-8. [C2PA and ML-DSA-65 interoperability proof](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/3).
+5. [Gateway Demo persistence profile and environment isolation](https://github.com/antifraudservices/antifraud-gw-node-ts/issues/2).
+6. [Reusable controlled attachment panel](https://github.com/antifraudservices/antifraud-portal-components-react/issues/5).
+7. [Professional send/review interface](https://github.com/antifraudservices/antifraud-professional-nextjs/issues/1).
+8. [Personal receive/authorize interface](https://github.com/antifraudservices/antifraud-personal-next/issues/1).
+9. [C2PA and ML-DSA-65 interoperability proof](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/3).
 
 ## Required acceptance journeys
 
@@ -179,6 +181,8 @@ state authorization and persistence invariants. At minimum prove:
 6. media-provenance adapter verification and hybrid-policy failure.
 
 The normal path is browser → authenticated BFF → high-level SDK → gateway and
-authoritative readback. Component fixtures, mocked routes, screenshots, API-only
-tests or HTTP success do not satisfy it. Promote in order:
-`test → local-network → test-network → network`.
+authoritative Demo readback. Component fixtures, mocked routes, screenshots,
+API-only tests or HTTP success do not satisfy it. Demo is the only executable
+MVP environment and retains the future Test Network UI and flows while its
+Fabric boundary is simulated. Test Network requires owner-provided Kubernetes
+and configuration and remains disabled; Production remains disabled.
