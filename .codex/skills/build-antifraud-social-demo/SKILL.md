@@ -7,7 +7,7 @@ description: Build or audit the synthetic Antifraud social relying-party demo fo
 
 ## Read before changing anything
 
-1. Read the Antifraud Data Space MVP Prompt v8 supplied by the project owner.
+1. Read the Antifraud Data Space MVP Prompt v9 supplied by the project owner.
 2. Read `README.md` and `docs/USE_CASE_TASKS.md` completely.
 3. Inspect the current branches, package versions and executable contracts in
    `antifraud-data-utils-ts`, `antifraud-sdk-core-ts`,
@@ -57,9 +57,17 @@ description: Build or audit the synthetic Antifraud social relying-party demo fo
 6. Build the portal BFF and UI from controlled components. Server-owned actor,
    device, audience, purpose, manifest and authority fields are read-only in
    the browser.
-7. Run unit, integration, real local browser and Playwright gates with Node 24.
-   Then progress through local-network, Test Network and production network;
-   no later stage substitutes for an earlier one.
+7. Run unit, integration, real Demo browser and Playwright gates with Node 24.
+   Demo is the only executable MVP environment. Test Network remains disabled
+   until the project owner supplies Kubernetes and configuration; Production
+   remains disabled.
+
+Demo keeps the same UI, options, controlled components, validation and business
+flows intended for Test Network. Only its Fabric boundary uses the fixed
+six-second in-memory simulation. Reuse the existing trusted BFF/gateway
+collection-prefix resolver; React never supplies a prefix or environment
+authority, and tests prove Demo cannot access Test Network or Production
+namespaces.
 
 ## Signing-session invariants
 
@@ -94,10 +102,18 @@ receipt or pending terminal state.
 Report these separately:
 
 - component or local test evidence;
-- real local portal → BFF → SDK → gateway readback;
-- local-network Fabric transaction and restart readback;
-- Test Network deployment and journey;
-- production deployment and journey.
+- real Demo portal → BFF → SDK → gateway authoritative readback;
+- explicitly simulated ledger receipt;
+- Test Network not deployed because owner-provided Kubernetes and
+  configuration are absent; and
+- Production disabled.
 
 A screenshot, fixture, mock, HTTP 200 or memory-adapter receipt is never
-on-chain, Test Network or production proof.
+on-chain, Test Network or Production proof. Kubernetes, local-network Fabric
+and Test Network do not block completion of the Demo MVP.
+
+When preparing Firebase App Hosting, never request or commit a service-account
+key. The project owner authorizes the official Firebase GitHub application and
+selects project, region, backend and branch. Use Application Default
+Credentials for Firebase Admin/Firestore and Secret Manager references for
+secrets. Verify each persistence adapter and its tests before claiming support.

@@ -4,6 +4,9 @@ All notable changes to this project are documented here.
 
 ## Unreleased
 
+- Adopt Prompt v9's Demo-only MVP boundary: Test Network requires
+  owner-provided Kubernetes, Production is disabled and collection prefixes
+  isolate environment data.
 - Add the preliminary synthetic social publication-signing UI and its explicit
   non-cryptographic in-memory demo boundary.
 - Document Schema.org document metadata with DIDComm attachment transport and
