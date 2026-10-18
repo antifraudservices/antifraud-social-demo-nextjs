@@ -12,6 +12,19 @@ review, demo PIN ceremony, rejection, in-memory receipt and BFF reload. It does
 not yet produce a cryptographic proof, call a managed wallet, persist through a
 gateway, write Fabric or implement C2PA. The interface labels that boundary.
 
+## Canonical document and attachment boundary
+
+Antifraud never models a file as FHIR `DocumentReference`. The business graph
+uses Schema.org `DigitalDocument` and `MediaObject`. PDF, Excel, Word, image,
+video and any other governed media bytes travel separately in DIDComm
+`attachments[]`, inline as `data.base64` or by protected reference as
+`data.links + data.hash`. The canonical minimal-PDF contract and proof are
+tracked by [antifraud-data-utils-ts issue #2](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/2).
+
+Age-over already exists in the controller-to-employee evidence flow. Any
+future relying-party age presentation consumes that authoritative predicate;
+it does not create another age-over derivation.
+
 ## UC-SOC-01 — Request a signature before publication
 
 1. A synthetic signed-in user prepares a text, image or video publication.
@@ -113,10 +126,12 @@ Task gates:
 
 For image and video demonstrations, add C2PA as an explicit adapter rather than
 as Antifraud's internal persistence model. The adapter must declare the exact
-supported C2PA version and algorithms. Until the selected C2PA profile permits
-the required post-quantum algorithm, use a standards-compatible C2PA claim
-signature plus a separately governed detached ML-DSA-65 companion proof when
-policy requires both.
+supported C2PA version and algorithms. Test ML-DSA-65 now against the exact
+C2PA asset and Antifraud manifest. Until the selected C2PA profile permits it
+as a conforming claim-signature algorithm, use a standards-compatible C2PA
+claim signature plus a separately governed ML-DSA-65 companion proof when
+policy requires both. A direct ML-DSA C2PA claim-signature experiment is
+labelled non-conformant laboratory evidence.
 
 Task gates:
 
@@ -124,6 +139,20 @@ Task gates:
 - Do not claim C2PA proves truth, human authorship or absence of generative AI.
 - Keep the C2PA manifest, Antifraud manifest and proof bindings explicit and
   test deterministic conversion between them.
+- Track the canonical proof in [antifraud-data-utils-ts issue #3](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/3).
+
+## GitHub issue chain
+
+The prompt is the complete contract. Executable work is owned by these issues:
+
+1. [Canonical attachment contract and minimal PDF proof](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/2).
+2. [SDK Core delivery orchestration](https://github.com/antifraudservices/antifraud-sdk-core-ts/issues/5).
+3. [SDK Node trusted transport](https://github.com/antifraudservices/antifraud-sdk-node-ts/issues/5).
+4. [Gateway confidential persistence and retrieval](https://github.com/antifraudservices/antifraud-gw-node-ts/issues/1).
+5. [Reusable controlled attachment panel](https://github.com/antifraudservices/antifraud-portal-components-react/issues/5).
+6. [Professional send/review interface](https://github.com/antifraudservices/antifraud-professional-nextjs/issues/1).
+7. [Personal receive/authorize interface](https://github.com/antifraudservices/antifraud-personal-next/issues/1).
+8. [C2PA and ML-DSA-65 interoperability proof](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/3).
 
 ## Required acceptance journeys
 

@@ -33,6 +33,12 @@ description: Build or audit the synthetic Antifraud social relying-party demo fo
   cryptography helpers in React or invent portal-local canonicalization.
 - Antifraud governs the request, policy, proof and evidence lifecycle; it does
   not become the root identity store.
+- Antifraud documents are Schema.org `DigitalDocument`/`MediaObject` graphs.
+  Never introduce FHIR or `DocumentReference`. Binary files of any governed
+  media type travel only in DIDComm `attachments[]`, inline or by protected
+  reference, using the released data-utils contract.
+- Reuse the existing controller-to-employee age-over evidence. A relying-party
+  flow requests the authoritative predicate and never derives a duplicate.
 
 ## Mandatory implementation order
 
@@ -76,8 +82,10 @@ receipt or pending terminal state.
 - Multiple independent signers use a proof set; ordered approval or
   countersignature uses a proof chain with explicit previous-proof binding.
 - C2PA is an interoperability adapter for media provenance. Declare its exact
-  version and supported algorithm set; do not label a detached Antifraud proof
-  as a native C2PA claim signature when the selected version does not permit it.
+  version and supported algorithm set. Test ML-DSA-65 against the exact same
+  asset and Antifraud manifest. Do not label the companion proof as a native
+  C2PA claim signature when the selected version does not permit it; a direct
+  ML-DSA experiment is explicitly non-conformant laboratory evidence.
 - A valid signature or C2PA manifest does not prove that media is truthful,
   human-created or legally qualified.
 
