@@ -8,7 +8,7 @@ private wallet material to React or to the relying party.
 Start future work by reading
 [`docs/USE_CASE_TASKS.md`](docs/USE_CASE_TASKS.md) and
 [`.codex/skills/build-antifraud-social-demo/SKILL.md`](.codex/skills/build-antifraud-social-demo/SKILL.md),
-then use the separately maintained Antifraud Data Space MVP Prompt v9 as the
+then use the separately maintained Antifraud Data Space MVP Prompt v10 as the
 complete implementation contract.
 
 ## Boundary
@@ -53,6 +53,14 @@ may be referenced from `apphosting.yaml`. Prefer Firestore for the hosted Demo;
 PostgreSQL plus local IPFS is the verified self-hosted profile. Supabase is
 currently a blob adapter and MongoDB is not wired as the current vault
 repository, so neither is claimed as a complete database profile.
+
+Enabling Google alone is not enough for local or hosted login. Register the
+social Firebase web app, authorize `localhost` and every deployed Beta origin,
+provide only public browser configuration, verify the ID token in the BFF and
+preserve popup-compatible headers. Follow the exact
+[Beta Firebase authentication handoff](docs/BETA_FIREBASE_AUTH.md). Google
+authenticates only the relying-party session; it grants no signature or person
+index access.
 
 Run with Node.js 24:
 

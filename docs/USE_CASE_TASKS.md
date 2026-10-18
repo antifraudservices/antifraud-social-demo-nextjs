@@ -1,8 +1,14 @@
 # Social publication signing use-case tasks
 
 These tasks describe the bounded synthetic demo. The Antifraud Data Space MVP
-Prompt v9 remains the complete contract and takes precedence if this summary
+Prompt v10 remains the complete contract and takes precedence if this summary
 omits a requirement.
+
+Google login and App Hosting setup follow
+[`BETA_FIREBASE_AUTH.md`](BETA_FIREBASE_AUTH.md). The provider, web app,
+authorized domains, BFF token verification and popup-compatible headers are
+all required. Authentication remains separate from every signature and
+person-index decision.
 
 ## Preliminary demo now present
 
