@@ -3,13 +3,40 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET, POST } from './route'
 
 describe('social demo BFF route', () => {
+  let authoritativeRecord: any
+
   beforeEach(() => {
+    globalThis.antifraudSocialDemoSigningStore = undefined
     vi.stubEnv('NODE_ENV', 'test')
     vi.stubEnv('ANTIFRAUD_SOCIAL_DEMO_MODE', 'true')
     vi.stubEnv('ANTIFRAUD_SOCIAL_DEMO_DELAY_MS', '0')
+    vi.stubEnv('ANTIFRAUD_GATEWAY_URL', 'http://gateway.local')
+    vi.stubEnv('ANTIFRAUD_GATEWAY_BEARER', 'social-bff-token')
+    vi.stubGlobal('fetch', vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
+      if (init?.method === 'POST') {
+        const submitted = JSON.parse(String(init.body))
+        authoritativeRecord = {
+          id: submitted.proof.requestId,
+          environment: 'demo',
+          status: 'demo-recorded',
+          content: submitted.content,
+          proof: submitted.proof,
+          receipt: {
+            adapter: 'in-memory-fabric-demo',
+            transactionId: 'demo-memory-authoritative',
+            recordedAt: submitted.proof.createdAt,
+            cryptographicProof: true,
+          },
+        }
+        return Response.json(authoritativeRecord, {status: 201})
+      }
+      return Response.json(authoritativeRecord)
+    }))
   })
 
   afterEach(() => {
+    globalThis.antifraudSocialDemoSigningStore = undefined
+    vi.unstubAllGlobals()
     vi.unstubAllEnvs()
   })
 
@@ -38,7 +65,10 @@ describe('social demo BFF route', () => {
     }))
     expect(reloadResponse.status).toBe(200)
     const reloaded = await reloadResponse.json()
-    expect(reloaded.request.receipt.cryptographicProof).toBe(false)
+    expect(reloaded.request.receipt.cryptographicProof).toBe(true)
+    expect(reloaded.request.receipt.transactionId).toBe('demo-memory-authoritative')
+    expect(reloaded.request.proof.status).toBe('verified')
+    expect(vi.mocked(fetch)).toHaveBeenCalledTimes(2)
   })
 
   it('fails closed when demo mode is not explicitly enabled', async () => {

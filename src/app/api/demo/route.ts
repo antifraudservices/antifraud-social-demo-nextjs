@@ -1,5 +1,6 @@
 import { resolveSocialDemoMode } from '../../../config/demo-mode'
 import { createDemoSigningStore, type DemoSigningStore } from '../../../lib/demo-signing-store'
+import {AntifraudGatewayClient} from 'antifraud-sdk-node-ts'
 
 const REQUEST_COOKIE = 'antifraud-social-demo-request'
 const SYNTHETIC_MEDIA_ID = 'synthetic-coastline-001'
@@ -11,8 +12,21 @@ declare global {
 function demoStore(): DemoSigningStore {
   if (!globalThis.antifraudSocialDemoSigningStore) {
     const configuredDelay = Number.parseInt(process.env.ANTIFRAUD_SOCIAL_DEMO_DELAY_MS ?? '6000', 10)
+    const baseUrl = process.env.ANTIFRAUD_GATEWAY_BASE_URL?.trim()
+      || process.env.ANTIFRAUD_GATEWAY_URL?.trim()
+    const bearer = process.env.ANTIFRAUD_GATEWAY_BEARER?.trim()
+    const requiresGateway = ['beta', 'staging'].includes(process.env.ANTIFRAUD_DEPLOYMENT_STAGE ?? '')
+    if (requiresGateway && (!baseUrl || !bearer)) {
+      throw new Error('The Beta social BFF requires the Gateway URL and server-only bearer.')
+    }
     globalThis.antifraudSocialDemoSigningStore = createDemoSigningStore({
       delayMs: Number.isFinite(configuredDelay) && configuredDelay >= 0 ? configuredDelay : 6_000,
+      ...(baseUrl && bearer ? {
+        gateway: new AntifraudGatewayClient({
+          baseUrl,
+          bearerCredential: async () => bearer,
+        }),
+      } : {}),
     })
   }
   return globalThis.antifraudSocialDemoSigningStore
@@ -31,14 +45,14 @@ function unavailable(): Response {
   return Response.json({ error: 'The in-memory social demo adapter is disabled.' }, { status: 503 })
 }
 
-function currentRequest(request: Request) {
+async function currentRequest(request: Request) {
   const requestId = requestIdFrom(request)
   return requestId ? demoStore().read(requestId) : undefined
 }
 
 export async function GET(request: Request): Promise<Response> {
   if (!resolveSocialDemoMode()) return unavailable()
-  return Response.json({ request: currentRequest(request) ?? null })
+  return Response.json({ request: await currentRequest(request) ?? null })
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -49,7 +63,7 @@ export async function POST(request: Request): Promise<Response> {
     const action = String(payload.action ?? '')
 
     if (action === 'request') {
-      const created = demoStore().createRequest({
+      const created = await demoStore().createRequest({
         caption: String(payload.caption ?? ''),
         mediaId: SYNTHETIC_MEDIA_ID,
       })
@@ -64,7 +78,7 @@ export async function POST(request: Request): Promise<Response> {
       )
     }
 
-    const existing = currentRequest(request)
+    const existing = await currentRequest(request)
     if (!existing) return Response.json({ error: 'No active signing request.' }, { status: 404 })
 
     if (action === 'authorize') {

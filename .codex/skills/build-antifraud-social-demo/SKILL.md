@@ -51,16 +51,18 @@ description: Build or audit the synthetic Antifraud social relying-party demo fo
 4. Add runtime-neutral orchestration to `antifraud-sdk-core-ts` and server/BFF
    integration to `antifraud-sdk-node-ts` only when the reviewed contracts
    require them.
-5. Publish and verify immutable shared-package versions from the lowest changed
-   package upward before pinning this portal. Never commit `file:`, Git,
-   workspace or vendored dependencies.
+5. Prove the complete affected local and local-network journeys first with
+   immutable `npm pack` tarballs installed `--no-save`. Do not publish an
+   isolated shared package merely because its own tests are green. Never
+   commit `file:`, Git, workspace or vendored dependencies.
 6. Build the portal BFF and UI from controlled components. Server-owned actor,
    device, audience, purpose, manifest and authority fields are read-only in
    the browser.
-7. Run unit, integration, real Demo browser and Playwright gates with Node 24.
-   Demo is the only executable MVP environment. Test Network remains disabled
-   until the project owner supplies Kubernetes and configuration; Production
-   remains disabled.
+7. Run unit, integration, real Demo browser and Playwright gates with Node 24,
+   then real local-network ledger write and authoritative readback. Only after
+   both matrices are green may one cumulative release publish shared packages
+   from the lowest dependency upward and pin exact registry versions. Test
+   Network follows that release; Production remains disabled.
 
 Demo keeps the same UI, options, controlled components, validation and business
 flows intended for Test Network. Only its Fabric boundary uses the fixed
@@ -104,13 +106,14 @@ Report these separately:
 - component or local test evidence;
 - real Demo portal → BFF → SDK → gateway authoritative readback;
 - explicitly simulated ledger receipt;
-- Test Network not deployed because owner-provided Kubernetes and
-  configuration are absent; and
+- local-network and Test Network results reported separately from Demo; the
+  one-orderer Test Network profile is non-HA and non-production; and
 - Production disabled.
 
 A screenshot, fixture, mock, HTTP 200 or memory-adapter receipt is never
-on-chain, Test Network or Production proof. Kubernetes, local-network Fabric
-and Test Network do not block completion of the Demo MVP.
+on-chain, local-network, Test Network or Production proof. Demo may be shown
+before Fabric is ready, but package publication and Test Network promotion
+remain blocked until the affected local-network gate is green.
 
 When preparing Firebase App Hosting, never request or commit a service-account
 key. The project owner authorizes the official Firebase GitHub application and

@@ -2,6 +2,8 @@
 
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
+import { EnvironmentSelector } from 'antifraud-portal-components-react'
+import type { SocialEnvironment } from '@/src/config/environment'
 import { LineIcon } from './LineIcon'
 
 type DemoRequest = Readonly<{
@@ -12,10 +14,11 @@ type DemoRequest = Readonly<{
   purpose: string
   signingKeyContext: string
   status: 'pending' | 'rejected' | 'demo-recorded'
+  proof?: Readonly<{status: 'verified'; verificationMethod: string; createdAt: string}>
   receipt?: Readonly<{
     transactionId: string
     adapter: string
-    cryptographicProof: false
+    cryptographicProof: true
   }>
 }>
 
@@ -32,7 +35,7 @@ async function demoRequest(payload?: Record<string, string>): Promise<DemoReques
   return body.request ?? null
 }
 
-export function SocialSigningDemo() {
+export function SocialSigningDemo({environment}: Readonly<{environment: SocialEnvironment}>) {
   const [caption, setCaption] = useState(INITIAL_CAPTION)
   const [request, setRequest] = useState<DemoRequest | null>(null)
   const [loaded, setLoaded] = useState(false)
@@ -104,7 +107,7 @@ export function SocialSigningDemo() {
     <main className="app-shell">
       <header className="topbar">
         <a className="wordmark" href="#top">Social Sandbox</a>
-        <p>Local test adapter · No network publication</p>
+        <p>Demo — simulated blockchain · managed-wallet proof</p>
         <button className="profile-button" aria-label="Synthetic profile"><LineIcon name="user" /></button>
       </header>
 
@@ -142,12 +145,18 @@ export function SocialSigningDemo() {
       </section>
 
       <aside className="evidence-rail" aria-label="Signing request status">
+        <EnvironmentSelector
+          value={environment.active}
+          onChange={() => undefined}
+          testNetworkEnabled={environment.testNetworkEnabled}
+          productionEnabled={environment.productionEnabled}
+        />
         <h2>Signing request</h2>
         <div className={`status-panel ${recorded ? 'complete' : ''}`}>
           <span className="status-symbol">{recorded ? <LineIcon name="check" /> : null}</span>
           <div>
             <strong>{recorded ? 'Simulation recorded' : request?.status === 'rejected' ? 'Request rejected' : 'Awaiting your authorization'}</strong>
-            <p>{recorded ? 'Not a cryptographic signature or Fabric transaction.' : 'Review the exact manifest before authorizing.'}</p>
+            <p>{recorded ? 'Cryptographic proof verified; the ledger receipt remains simulated.' : 'Review the exact manifest before authorizing.'}</p>
           </div>
         </div>
         <dl className="request-facts">
@@ -177,7 +186,7 @@ export function SocialSigningDemo() {
                 <>
                   <label className="pin-label" htmlFor="demo-pin">Demo PIN</label>
                   <input id="demo-pin" type="password" inputMode="numeric" autoComplete="off" value={demoPin} onChange={(event) => setDemoPin(event.target.value)} />
-                  <p className="simulation-note">In-memory adapter · no cryptographic signature</p>
+                  <p className="simulation-note">Local PIN fallback · ML-DSA-65 managed-wallet signature</p>
                   {error ? <p className="error-message" role="alert">{error}</p> : null}
                   <div className="dialog-actions">
                     <button className="secondary-action" type="button" onClick={reject} disabled={busy}>Reject</button>
@@ -189,7 +198,7 @@ export function SocialSigningDemo() {
             <div className="dialog-result">
               <span className="result-check"><LineIcon name="check" /></span>
               <h3>{recorded ? 'Simulation recorded' : 'Pending authorization'}</h3>
-              <p>{recorded ? 'Not a cryptographic signature or Fabric transaction.' : 'No receipt exists until the demo ceremony completes.'}</p>
+              <p>{recorded ? 'Signature verified. The displayed ledger transaction is a Demo simulation, not Fabric.' : 'No proof or receipt exists until the signing ceremony completes.'}</p>
               {request.receipt ? <div className="receipt"><span>Demo transaction ID</span><code>{request.receipt.transactionId.slice(0, 26)}…</code></div> : null}
             </div>
           </section>

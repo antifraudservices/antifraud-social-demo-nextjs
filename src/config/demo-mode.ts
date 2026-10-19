@@ -7,4 +7,5 @@ export function resolveSocialDemoMode(environment: DemoEnvironment = process.env
 
   return environment.ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE === 'test'
     || environment.ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE === 'staging'
+    || environment.ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE === 'beta'
 }

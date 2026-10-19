@@ -18,6 +18,11 @@ describe('social demo mode boundary', () => {
     expect(resolveSocialDemoMode({
       NODE_ENV: 'production',
       ANTIFRAUD_SOCIAL_DEMO_MODE: 'true',
+      ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE: 'beta',
+    })).toBe(true)
+    expect(resolveSocialDemoMode({
+      NODE_ENV: 'production',
+      ANTIFRAUD_SOCIAL_DEMO_MODE: 'true',
       ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE: 'test-network',
     })).toBe(false)
     expect(resolveSocialDemoMode({ NODE_ENV: 'development' })).toBe(false)
