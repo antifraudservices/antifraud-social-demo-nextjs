@@ -1,0 +1,40 @@
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 40
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: ANTIFRAUD_DEPLOYMENT_STAGE
+    value: beta
+    availability: [RUNTIME]
+  - variable: ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE
+    value: beta
+    availability: [RUNTIME]
+  - variable: ANTIFRAUD_SOCIAL_DEMO_MODE
+    value: "true"
+    availability: [RUNTIME]
+  - variable: ANTIFRAUD_GATEWAY_BASE_URL
+    value: https://antifraud-gw-beta-982931712028.us-central1.run.app
+    availability: [RUNTIME]
+  - variable: ANTIFRAUD_GATEWAY_BEARER
+    secret: antifraud-demo-social-bff-token
+    availability: [RUNTIME]
+  - variable: ANTIFRAUD_NETWORK_KIND
+    value: demo
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: ANTIFRAUD_TEST_NETWORK_ENABLED
+    value: "false"
+    availability:
+      - RUNTIME
+  - variable: ANTIFRAUD_DEMO_RETENTION_DAYS
+    value: "7"
+    availability:
+      - RUNTIME
+  - variable: ANTIFRAUD_PRODUCTION_ENABLED
+    value: "false"
+    availability:
+      - RUNTIME

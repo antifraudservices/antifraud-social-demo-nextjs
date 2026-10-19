@@ -18,6 +18,10 @@
     "check": "npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
+    "antifraud-data-utils-ts": "0.1.8",
+    "antifraud-portal-components-react": "0.1.1",
+    "antifraud-sdk-core-ts": "0.1.4",
+    "antifraud-sdk-node-ts": "0.2.4",
     "next": "16.4.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
