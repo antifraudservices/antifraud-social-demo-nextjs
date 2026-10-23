@@ -16,7 +16,7 @@ env:
     value: "true"
     availability: [RUNTIME]
   - variable: ANTIFRAUD_GATEWAY_BASE_URL
-    value: https://antifraud-gw-beta-982931712028.us-central1.run.app
+    value: https://host-beta.antifraud.services
     availability: [RUNTIME]
   - variable: ANTIFRAUD_GATEWAY_BEARER
     secret: antifraud-demo-social-bff-token

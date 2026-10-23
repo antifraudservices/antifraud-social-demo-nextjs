@@ -20,6 +20,8 @@ describe('Firebase App Hosting source deployment', () => {
     expect(appHostingYaml).toMatch(/ANTIFRAUD_SOCIAL_DEMO_MODE[\s\S]*value: "true"/u)
     expect(appHostingYaml).toMatch(/ANTIFRAUD_SOCIAL_DEPLOYMENT_STAGE[\s\S]*value: beta/u)
     expect(appHostingYaml).toMatch(/ANTIFRAUD_PRODUCTION_ENABLED[\s\S]*value: "false"/u)
+    expect(appHostingYaml).toMatch(/ANTIFRAUD_GATEWAY_BASE_URL[\s\S]*https:\/\/host-beta\.antifraud\.services/u)
     expect(appHostingYaml).toMatch(/ANTIFRAUD_GATEWAY_BEARER[\s\S]*secret: antifraud-demo-social-bff-token/u)
+    expect(appHostingYaml).not.toMatch(/\.run\.app/u)
   })
 })
